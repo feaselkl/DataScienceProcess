@@ -1,0 +1,873 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<title>Catallaxy Services | Launching A Data Science Project</title>
+
+		<link rel="stylesheet" href="../reveal.js/dist/reset.css">
+		<link rel="stylesheet" href="../reveal.js/dist/reveal.css">
+		<link rel="stylesheet" href="../reveal.js/dist/theme/black.css" id="theme">
+		<link rel="stylesheet" href="../WebsiteAssets/mods.css">
+
+		<!-- Theme used for syntax highlighted code -->
+		<link rel="stylesheet" href="../reveal.js/plugin/highlight/monokai.css" id="highlight-theme">
+	</head>
+	<body>
+		<div class="reveal">
+			<div class="slides">
+				<section data-background-image="presentation/assets/image/Bubbles.jpg" data-background-opacity="0.4">
+					<h2>Launching A Data Science Project</h2>
+					<h3>Cleaning Is Half The Battle</h3>
+					
+					<a href="https://www.catallaxyservices.com">Kevin Feasel</a> (<a href="https://twitter.com/feaselkl">@feaselkl</a>)<br />
+					<a href="https://csmore.info/on/datascience">https://csmore.info/on/datascience</a>
+				</section>
+				
+				<section data-background-image="presentation/assets/image/Bubbles.jpg" data-background-opacity="0.4">
+					<h3>Who Am I?  What Am I Doing Here?</h3>
+					<div class="container">
+						<div class="col">
+							<table class="whoami">
+								<tr>
+									<td><a href="https://csmore.info"><img src="../WebsiteAssets/Logo.png" height="100" /></a></td>
+									<td nowrap><a href="https://csmore.info">Catallaxy Services</a></td>
+								</tr>
+								<tr>
+									<td><a href="https://curatedsql.com"><img src="../WebsiteAssets/CuratedSQLLogo.png" height="100" /></a></td>
+									<td nowrap><a href="https://curatedsql.com">Curated SQL</a></td>
+								</tr>
+								<tr>
+									<td><a href="https://www.apress.com/us/book/9781484254608"><img src="../WebsiteAssets/PolyBaseRevealed.png" height="120" /></a></td>
+									<td nowrap><a href="https://www.apress.com/us/book/9781484254608">PolyBase Revealed</a></td>
+								</tr>
+							</table>
+						</div>
+						<div class="col">
+							<a href="http://www.twitter.com/feaselkl"><img src="../WebsiteAssets/HeadShot.jpg" height="358" width="315" /></a>
+							<br />
+							<a href="http://www.twitter.com/feaselkl">@feaselkl</a>
+						</div>					
+					</div>
+				</section>
+				
+				<section data-background-image="presentation/assets/background/2_1_philosophy.jpg" data-background-opacity="0.2">
+					<h3>Data Adages</h3>
+					
+					<ul>
+						<li>"Clean" data is an aspiration, not a reality</li>
+						<li>If data is stored in two places, there will inevitably be disagreements</li>
+						<li>You will always have more questions than data</li>
+						<li>Decision-makers will not know their questions until you have enough information to give them</li>
+						<li>Data necessarily abstracts the particulars of time and place</li>
+					</ul>
+					
+					<p>Nevertheless, our job is to figure something out.</p>
+				</section>
+				
+				<section data-background-image="presentation/assets/image/Bubbles.jpg" data-background-opacity="0.4">
+					<h3>Process</h3>
+					
+					<p>To deal with these considerations, we build and implement processes.  These processes give us structure and help us navigate some of the difficulties in managing data.</p>
+					
+					<div class="container">
+						<div class="col">
+							<img src="presentation/assets/image/tdsp-lifecycle2.png" />
+						</div>
+						<div class="col">
+							<p>In today's talk, we will look at one particular process:  the Microsoft Team Data Science Process.</p>
+						</div>					
+					</div>
+				</section>
+				
+				<section data-background-image="presentation/assets/background/2_2_motivation.jpg" data-background-opacity="0.2">
+					<h3>Motivation</h3>
+					
+					<p>We will use the Team Data Science Process to uncover interesting information from the <a href="https://www.brentozar.com/archive/2021/01/are-you-underpaid-find-out-in-the-data-professional-salary-survey-results/">2021 Data Professionals Salary Survey</a>.</p>
+
+					<p>At each step of the way, we will walk through implementation details and achieve a better understanding of data professional salaries.</p>
+				</section>
+				
+				<section data-background-image="presentation/assets/image/Bubbles.jpg" data-background-opacity="0.4">
+					<h3>Agenda</h3>
+					
+					<div class="container">
+						<div class="col">
+							<ol>
+								<li class="active">Business Understanding</li>
+								<li>Data Processing</li>
+								<li>Modeling</li>
+								<li>Deployment</li>
+								<li>What's Next?</li>
+							</ol>
+						</div>
+						<div class="col">
+							<img src="presentation/assets/image/tdsp-lifecycle2_businessunderstanding.png" />
+						</div>					
+					</div>
+				</section>
+				
+				<section data-background-image="presentation/assets/background/business_understanding.jpg" data-background-opacity="0.2">
+					<h3>Business Understanding</h3>
+					
+					<p>Somebody higher up (typically on the business side of the house) wants a data science project done.  Your mission is to figure out as much about that person's vision as possible.</p>
+
+					<p>Your domain knowledge will be critical to success, but you should still find the champion(s) of your project and understand best their vision of success.</p>
+				</section>
+				
+				<section data-background-image="presentation/assets/background/questions.jpg" data-background-opacity="0.2">
+					<h3>Ask Questions</h3>
+					
+					<p>When interviewing your project champion or people on the business side, listen for the following types of questions:</p>
+
+					<ul>
+						<li>How much / how many?</li>
+						<li>Which category does this belong to?</li>
+						<li>How can we segment this data?</li>
+						<li>Is this weird?</li>
+						<li>Which option should I choose?</li>
+					</ul>
+
+					<p>These questions help you determine which algorithms to use.</p>
+				</section>
+				
+				<section data-background-image="presentation/assets/background/problem.jpg" data-background-opacity="0.2">
+					<h3>Get A Specific Problem</h3>
+					
+					<p>Your goal is to nail down a <strong>specific</strong> problem, narrowing the scope to something achievable.</p>
+
+					<ul>
+						<li>Find a model which predicts quarterly sales to within 5% no later than 30 days into that quarter.</li>
+						<li>Given a title and description for a product, tell me with at least 90% probability a listing category that Amazon will consider valid for this product.</li>
+						<li>Determine which factors most affect the number of years the first owner holds onto our mid-range sedan.</li>
+					</ul>
+				</section>
+				
+				<section data-background-image="presentation/assets/background/looking_for_data.jpg" data-background-opacity="0.2">
+					<h3>Looking For Data</h3>
+					
+					<p>Once you have an interesting question, start looking for data. Some of this data will be in-house and could be in databases, Excel, flat files, accessible through APIs, or even in reports.</p>
+
+					<p>Your champion will hopefully be able to point you in the right direction, but this part of the process requires legwork.</p>
+				</section>
+				
+				<section data-background-image="presentation/assets/background/dictionary.jpg" data-background-opacity="0.2">
+					<h3>Data Dictionary</h3>
+					
+					<p>Once you have a compendium of data sources, you will want to build a <strong>data dictionary</strong>, which helps you explain what different pieces of data actually mean.  A data dictionary typically tells you:</p>
+
+					<ul>
+						<li>Data type:  numeric, string, categorical, binary</li>
+						<li>Data format:  CSV, SQL Server table, Hive table, etc.</li>
+						<li>Size of data and number of records</li>
+						<li>Enumeration of valid values (if categorical)</li>
+						<li>Other domain rules (if known)</li>
+					</ul>
+				</section>
+				
+				<section data-background-image="presentation/assets/background/warehouse.jpg" data-background-opacity="0.2">
+					<h3>End Result</h3>
+					
+					<p>Another thing to determine is, where does your end data need to be? Will there be a different engineering team expecting to call a microservice API?  Will you get a set of files each day and dump results into a warehouse?</p>
+
+					<p>This is generally a technical problem that an Engineering group will architect, although your champion might have insight here depending upon how the business side will need to use your results.</p>
+				</section>
+				
+				<section data-background-image="presentation/assets/image/Bubbles.jpg" data-background-opacity="0.4">
+					<h3>Example</h3>
+					
+					<p>We work for Data Platform Specialists, a company dedicated to providing DBAs and other data platform professionals with valuable market knowledge. We have come into possession of a survey of data professionals and want to build insights that we can share with our client base.</p>
+				</section>
+				
+				<section data-background-image="presentation/assets/image/Bubbles.jpg" data-background-opacity="0.4">
+					<h3>Example</h3>
+					
+					<img src="presentation/assets/image/Survey.png" />
+				</section>
+				
+				<section data-background-image="presentation/assets/image/Bubbles.jpg" data-background-opacity="0.4">
+					<h3>Example</h3>
+					
+					<p>Questions we can ask given our domain knowledge:</p>
+					
+					<ul>
+						<li><strong>How much</strong> money does a DBA make?</li>
+						<li><strong>Which category</strong> of DBA (junior, mid-level, senior) does this particular work?</li>
+						<li><strong>How can we segment</strong> the DBAs in our survey?</li>
+						<li>Is this many hours per week <strong>weird</strong>?</li>
+						<li><strong>Which option should I choose</strong> as a career path? DBA? Data science? BI?</li>
+					</ul>
+				</section>
+				
+				<section data-background-image="presentation/assets/image/Bubbles.jpg" data-background-opacity="0.4">
+					<h3>Example</h3>
+					
+					<p>Narrowing this down with our champion and other stakeholders, we can get to the following question which we will endeavour to answer:</p>
+
+					<p><strong>How much money should we expect a data professional will make?</strong></p>
+				</section>
+				
+				<section data-background-image="presentation/assets/background/documents.jpg" data-background-opacity="0.2">
+					<h3>Example</h3>
+					
+					<p>As we review the survey data, we can start to see different shapes of data and begin to build a data dictionary.</p>
+
+					<p>For example, TelecommuteDaysPerWeek has six options:  less than 1, 1, 2, 3, 4, 5 or more. These are ordered options, meaning the numbers inherently matter.</p>
+
+					<p>By contrast, number of hours worked per week is an integer ranging from 5 to 200 (?!).</p>
+				</section>
+				
+				<section data-background-image="presentation/assets/background/3_1_connection.jpg" data-background-opacity="0.2">
+					<h3>Example</h3>
+					
+					<p>Our company wants to build a small website and allow people who have built profiles to get an estimate of how much they could be making in different roles.  Our job is to build a microservice API which returns a dollar amount based on inputs.</p>
+				</section>
+				
+				<section data-background-image="presentation/assets/image/Bubbles.jpg" data-background-opacity="0.4">
+					<h3>Agenda</h3>
+					
+					<div class="container">
+						<div class="col">
+							<ol>
+								<li>Business Understanding</li>
+								<li class="active">Data Processing</li>
+								<li>Modeling</li>
+								<li>Deployment</li>
+								<li>What's Next?</li>
+							</ol>
+						</div>
+						<div class="col">
+							<img src="presentation/assets/image/tdsp-lifecycle2_data.png" />
+						</div>					
+					</div>
+				</section>
+				
+				<section data-background-image="presentation/assets/image/Bubbles.jpg" data-background-opacity="0.4">
+					<h3>Data Processing</h3>
+					
+					<p>Data processing is made up of a few different activities:</p>
+					
+					<ul>
+						<li>Data Gathering</li>
+						<li>Data Cleansing</li>
+						<li>Data Analysis</li>
+					</ul>
+				</section>
+				
+				<section data-background-image="presentation/assets/background/collection.jpg" data-background-opacity="0.2">
+					<h3>Data Gathering</h3>
+					
+					<p>Data gathering will likely be an iterative process; as you flesh out your models and gain a better understanding of the problem, you will likely search several times for data from sources like:</p>
+					
+					<ul>
+						<li>Internal proprietary data</li>
+						<li>Open data sources (often governmental or academic)</li>
+						<li>Paid APIs or data sources from third parties</li>
+						<li>Survey data</li>
+					</ul>
+				</section>
+				
+				<section data-background-image="presentation/assets/background/map.jpg" data-background-opacity="0.2">
+					<h3>Data Gathering Example</h3>
+					
+					<p>In this example, we will stick to just the data professional survey. But if you want to take this further, a few additional data sources could be:</p>
+					
+					<ul>
+						<li>PPP GDP per capita to normalize across countries.</li>
+						<li>A geocoding data set to visualize results.</li>
+						<li>Cost of living by ZIP code.</li>
+						<li>Census information by ZIP code.</li>
+						<li>Data from other surveys to add more to the sample.</li>
+					</ul>
+				</section>
+				
+				<section data-background-image="presentation/assets/image/Bubbles.jpg" data-background-opacity="0.4">
+					<h3>Data Cleansing</h3>
+					
+					<div class="container">
+						<div class="col">
+							<img src="presentation/assets/image/Knowing.jpg" />
+						</div>
+						<div class="col">
+							<p>Data cleansing is half the battle.  That's the title, after all!</p>
+						</div>					
+					</div>
+				</section>
+				
+				<section data-background-image="presentation/assets/image/Bubbles.jpg" data-background-opacity="0.4">
+					<h3>Data Cleansing</h3>
+					
+					<p>Well, actually...</p>
+					
+					<img src="presentation/assets/image/Sully.jpg" />
+				</section>
+				
+				<section data-background-image="presentation/assets/image/Bubbles.jpg" data-background-opacity="0.4">
+					<h3>Data Cleansing</h3>
+					
+					<p>Most of your time, you'll be a data plumber.</p>
+					
+					<img src="presentation/assets/image/SuperMario.jpg" />
+				</section>
+				
+				<section data-background-image="presentation/assets/background/2_0_cleaning.jpg" data-background-opacity="0.2">
+					<h3>Data Cleansing</h3>
+					
+					<p>General estimates that you will hear from data scientists is that they spend approximately 80% of their time cleaning data. If anything, this is an underestimation--based on my experiences, that number might be closer to 90%.</p>
+
+					<p>Simply getting the data is a start, but there's a long journey ahead.</p>
+				</section>
+				
+				<section data-background-image="presentation/assets/background/4_3_datatypes.jpg" data-background-opacity="0.2">
+					<h3>Data Cleansing</h3>
+					
+					<p>After grabbing relevant-looking data sets, you will want to join them together to gain insight from the mashup of different data sets. Common join activities include:</p>
+					
+					<ul>
+						<li>Changing the grain of at least one data set</li>
+						<li>Definining join criteria (because there is no obvious natural join key)</li>
+						<li>Reshaping data to fit join criteria</li>
+					</ul>
+				</section>
+				
+				<section data-background-image="presentation/assets/background/4_1_dataquality.jpg" data-background-opacity="0.2">
+					<h3>Data Cleansing</h3>
+					
+					<p>You will quickly find problems with your data sets, including (but not limited to):</p>
+					
+					<ul>
+						<li>Mismatched, mislabeled, and incorrect data</li>
+						<li>Records with missing data</li>
+						<li>Duplicated records</li>
+						<li>Data inconsistencies:  records conflicting with other records</li>
+						<li>Misshapen flat files</li>
+					</ul>
+				</section>
+				
+				<section data-background-image="presentation/assets/background/mismatch.jpg" data-background-opacity="0.2">
+					<h3>Data Cleansing - Mismatches</h3>
+					
+					<p><strong>Mislabeled</strong> data:  when the label is incorrect.  Ex: on the data professional survey, a person who earns 50K per year accidentally typing 500K per year. If you can fix the label, this data becomes useful. If you cannot, it may throw off your analysis.</p>
+
+					<p><strong>Mismatched</strong> data:  data joined together which should not have been.</p>
+							
+					<p><strong>Incorrect</strong> data: when data other than the label is incorrect. Ex: a person works 200 hours per week?</p>
+				</section>
+				
+				<section data-background-image="presentation/assets/background/hole.jpg" data-background-opacity="0.2">
+					<h3>Data Cleansing - Missing Data</h3>
+					
+					<p>People don't always fill out the entirety of every form. When we're missing important data, we have a few options available to us:</p>
+
+					<ul>
+						<li>Delete the row (okay with a small percent)</li>
+						<li>Substitute with a dummy value</li>
+						<li>Substitute with the mean, median, or mode</li>
+						<li>Use regression and replace with the regressed value</li>
+					</ul>
+							
+					<p>None of these options is perfect, but the last three can help salvage incomplete records.</p>
+				</section>
+				
+				<section data-background-image="presentation/assets/background/duplicates.jpg" data-background-opacity="0.2">
+					<h3>Data Cleansing - Duplicates</h3>
+					
+					<p>If your data source does not have duplicate protection in place, you might end up with multiple entries representing the same thing. Sometimes it's easy to catch those:  you might be able to use a DISTINCT clause to remove duplicates. Other times, you will have to dig further.</p>
+				</section>
+				
+				<section data-background-image="presentation/assets/image/Bubbles.jpg" data-background-opacity="0.4">
+					<h3>Data Inconsistencies</h3>
+					
+					<p>Independent systems may end up with inconsistent data due to reasons like typos, transcription errors, etc. Sometimes subtle differences in data sets can lead to differing results. Potential solutions include:</p>
+					
+					<ul>
+						<li>Make one data set canonical</li>
+						<li>Institute rules (pick the lower number, pick the later date, etc.)</li>
+					</ul>
+				</section>
+				
+				<section data-background-image="presentation/assets/background/misshapen.jpg" data-background-opacity="0.2">
+					<h3>Misshapen Data</h3>
+					
+					<p>Data stored in flat files or textual format can end up misshapen--some rows may not have enough delimiters (or maybe too many), there could be newlines in the middle of a record, or the file cuts off in the middle of a record.</p>
+
+					<p>This is a problem with flat files and certain semi-structured data formats. It is not a problem with relational databases, where data shape is enforced.</p>
+				</section>
+				
+				<section data-background-image="presentation/assets/background/shapes.jpg" data-background-opacity="0.2">
+					<h3>Data Shaping</h3>
+					
+					<p>There are several techniques we can use to reshape data to make it easier to analyze:</p>
+
+					<ul>
+						<li>Vectorize words (turn each word into a number)</li>
+						<li>Turn strings into factors (categorical data)</li>
+						<li>Normalize values (transform numeric data to have a mean of 0 and standard deviation of 1)</li>
+						<li>Bin data, converting continuous variables to discrete</li>
+					</ul>
+				</section>
+				
+				<section data-background-image="presentation/assets/background/4_5_demo.jpg" data-background-opacity="0.2">
+					<h3>Demo Time</h3>
+				</section>
+				
+				<section data-background-image="presentation/assets/background/exploration.jpg" data-background-opacity="0.2">
+					<h3>Data Analysis</h3>
+					
+					<p>The most common technique for data analysis at this point is Exploratory Data Analysis (EDA). Examples of EDA techniques include:</p>
+
+					<ul>
+						<li>Getting count and cardinality of features</li>
+						<li>Building out 5-number summaries</li>
+						<li>Visualizing data, especially with box plots and histograms</li>
+						<li>Determining correlation between variables</li>
+					</ul>
+				</section>
+				
+				<section data-background-image="presentation/assets/image/Bubbles.jpg" data-background-opacity="0.4">
+					<h3>Data Analysis - Cardinality</h3>
+					
+					<div class="container">
+						<div class="col">
+							<img src="presentation/assets/image/Cardinality.png" />
+						</div>
+						<div class="col">
+							<p>The cardinality of a feature is the number of unique values.</p>
+						</div>					
+					</div>
+				</section>
+				
+				<section data-background-image="presentation/assets/image/Bubbles.jpg" data-background-opacity="0.4">
+					<h3>Data Analysis - 5-Number Summary</h3>
+					
+					<p>The five-number summary of a feature tells us the minimum value, value at the 25% mark, value at the 50% mark, value at the 75% mark, and maximum value. The mean technically is not part of the five-number summary, but can be useful.</p>
+					
+					<img src="presentation/assets/image/FiveNumber.png" />
+				</section>
+				
+				<section data-background-image="presentation/assets/image/Bubbles.jpg" data-background-opacity="0.4">
+					<h3>Data Analysis - Box Plot</h3>
+					
+					<p>Box plots show us the five-number summary by group.</p>
+					
+					<img src="presentation/assets/image/BoxPlot.png" />
+				</section>
+				
+				<section data-background-image="presentation/assets/image/Bubbles.jpg" data-background-opacity="0.4">
+					<h3>Data Analysis - Histogram</h3>
+					
+					<p>Histograms show us the spread of a single variable.</p>
+					
+					<img src="presentation/assets/image/Histogram.png" height="500" width="360" />
+				</section>
+				
+				<section data-background-image="presentation/assets/image/Bubbles.jpg" data-background-opacity="0.4">
+					<h3>Data Analysis - Correlation</h3>
+					
+					<p>Here we have two comparisons, depth vs table and x vs y. Depth and table are mildly negatively correlated; this isn't a problem. The x and y variables, however, are very highly correlated. Some algorithms may exhibit problems if you include both x and y in your analysis.</p>
+					
+					<img src="presentation/assets/image/Correlation.png" />
+				</section>
+				
+				<section data-background-image="presentation/assets/background/4_5_demo.jpg" data-background-opacity="0.2">
+					<h3>Demo Time</h3>
+				</section>
+				
+				<section data-background-image="presentation/assets/image/Bubbles.jpg" data-background-opacity="0.4">
+					<h3>Agenda</h3>
+					
+					<div class="container">
+						<div class="col">
+							<ol>
+								<li>Business Understanding</li>
+								<li>Data Processing</li>
+								<li class="active">Modeling</li>
+								<li>Deployment</li>
+								<li>What's Next?</li>
+							</ol>
+						</div>
+						<div class="col">
+							<img src="presentation/assets/image/tdsp-lifecycle2_modeling.png" />
+						</div>					
+					</div>
+				</section>
+				
+				<section data-background-image="presentation/assets/background/model.jpg" data-background-opacity="0.2">
+					<h3>Modeling</h3>
+					
+					<p>Modeling has five major steps:</p>
+
+					<ul>
+						<li>Feature Engineering</li>
+						<li>Feature Selection</li>
+						<li>Model Selection and Training</li>
+						<li>Model Evaluation</li>
+						<li>Model Tuning</li>
+					</ul>
+				</section>
+				
+				<section data-background-image="presentation/assets/background/engineering.jpg" data-background-opacity="0.2">
+					<h3>Feature Engineering</h3>
+					
+					<p>Feature engineering involves creating relevant features from raw data. Examples include:</p>
+
+					<ul>
+						<li>Indicator flags (Age >= 21, Income >= $100K)</li>
+						<li>Calculations (ClickThroughRate = Clicks / Impressions)</li>
+						<li>Geocoding latitude and longitude from an address</li>
+						<li>Aggregating data (by day, by hour, etc.)</li>
+						<li>Text processing -- turning words into arbitrary numbers for numeric analysis (TF-IDF, Word2Vec)</li>
+					</ul>
+				</section>
+				
+				<section data-background-image="presentation/assets/background/selection.jpg" data-background-opacity="0.2">
+					<h3>Feature Selection</h3>
+					
+					<p>We use feature selection to winnow down the available set of features.  There are several reasons to do this:</p>
+
+					<ul>
+						<li>Collinearity -- one feature can predict another, making analysis less precise.</li>
+						<li>Make analysis easier for a human to understand by removing irrelevant or redundant features.</li>
+						<li>More efficient training with fewer variables.</li>
+						<li>Reduce the risk of an irrelevant or redundant feature causing spurious correlation.</li>
+					</ul>
+				</section>
+				
+				<section data-background-image="presentation/assets/image/Bubbles.jpg" data-background-opacity="0.4">
+					<h3>Spurious Correlation</h3>
+					
+					<img src="presentation/assets/image/SpuriousCorrelation.png" height="500" />
+					
+					<p>(<a href="http://www.tylervigen.com/spurious-correlations">Source</a>)</p>
+				</section>
+				
+				<section data-background-image="presentation/assets/background/train.jpg" data-background-opacity="0.2">
+					<h3>Model Training</h3>
+					
+					<p>We take some percentage of our total data and designate it for training / validation, and the remainder is for evaluation. There are no hard rules on percentages, but typically, we reserve 70-80% for training.</p>
+					
+					<p>There are four major branches of algorithms:</p>
+
+					<ul>
+						<li>Supervised learning</li>
+						<li>Unsupervised learning</li>
+						<li>Self-supervised learning</li>
+						<li>Reinforcement learning</li>
+					</ul>
+				</section>
+				
+				<section data-background-image="presentation/assets/background/supervision.jpg" data-background-opacity="0.2">
+					<h3>Supervised Learning</h3>
+					
+					<p>Supervised learning models require known answers (labels). We train a model to map input data to those labels in order to have the model predict the correct answer for unlabeled records. Major classes of supervised learning models and their pertinent driving questions include:</p>
+
+					<ul>
+						<li>Regression -- How much?</li>
+						<li>Classification -- Which?</li>
+						<li>Recommendation -- What next?</li>
+					</ul>
+				</section>
+				
+				<section data-background-image="presentation/assets/background/cluster.jpg" data-background-opacity="0.2">
+					<h3>Unsupervised Learning</h3>
+					
+					<p>With unsupervised learning, we do not know the answers beforehand and try to derive answers. We can use unsupervised learning to drive toward a supervised problem by giving data analysts insight into the nature of the problem. Major classes of unsupervised learning models and their pertinent driving questions include:</p>
+
+					<ul>
+						<li>Clustering -- How can we segment?</li>
+						<li>Dimensionality reduction -- What of this data is useful?</li>
+					</ul>
+				</section>
+				
+				<section data-background-image="presentation/assets/background/book.jpg" data-background-opacity="0.2">
+					<h3>Self-Supervised Learning</h3>
+					
+					<p>This is a subset of supervised learning, but with the popularity of neural networks, has come into its own. We use heuristics to guesstimate labels and train the model that way. An example of self-supervised learning is predicting the next word in a document based on previous words.</p>
+
+					<p>Self-supervised learning typically happens with neural networks.</p>
+				</section>
+				
+				<section data-background-image="presentation/assets/image/Bubbles.jpg" data-background-opacity="0.4">
+					<h3>Reinforcement Learning</h3>
+					
+					<div class="container">
+						<div class="col">
+							<img src="presentation/assets/image/MariFlow.png" />
+						</div>
+						<div class="col">
+							<p>Reinforcement learning is where we train an agent to observe its environment and use those environmental clues to make a decision.</p>
+						</div>					
+					</div>
+				</section>
+				
+				<section data-background-image="presentation/assets/background/greenscreen.jpg" data-background-opacity="0.2">
+					<h3>Choose an Algorithm</h3>
+					
+					<p>Once you understand the nature of the problem, you can choose among viable algorithms based on the following major trade-offs:</p>
+
+					<ul>
+						<li>Accuracy</li>
+						<li>Training time</li>
+						<li>Ability to understand the result</li>
+						<li>Number of parameters</li>
+						<li>Number of features allowed</li>
+					</ul>
+				</section>
+				
+				<section data-background-image="presentation/assets/image/Bubbles.jpg" data-background-opacity="0.4">
+					<img src="presentation/assets/image/Algorithms.png" height="650" />
+				</section>
+				
+				<section data-background-image="presentation/assets/image/Bubbles.jpg" data-background-opacity="0.4">
+					<h3>Algorithms</h3>
+					
+					<div class="container">
+						<div class="col">
+							<img src="presentation/assets/image/LinearRegression.png" />
+						</div>
+						<div class="col">
+							<p>Once you have an algorithm, features, and labels (if supervised), you can train the algorithm. Training a model is solving a system of equations, minimizing a loss function.</p>
+						</div>					
+					</div>
+				</section>
+				
+				<section data-background-image="presentation/assets/background/fitting.jpg" data-background-opacity="0.2">
+					<h3>Validate the Model</h3>
+					
+					<p>Instead of using up all of our data for training, we typically want to perform some level of validation within our training data set to ensure that we are on the right track and are not overfitting.</p>
+
+					<p>Overfitting happens when a model latches on to the particulars of a data set, leaving it unable to generalize to new data. To test for overfitting, test your model against unseen data. If there is a big dropoff in model accuracy between training and testing data, you are likely overfitting.</p>
+				</section>
+				
+				<section data-background-image="presentation/assets/background/suitmeasure.jpg" data-background-opacity="0.2">
+					<h3>Cross-Validation</h3>
+					
+					<p>Cross-validation is a technique where we slice and dice the training data, training our model with different subsets of the total data. The purpose here is to find a model which is fairly robust to the particulars of a subset of training data, thereby reducing the risk of overfitting.</p>
+				</section>
+				
+				<section data-background-image="presentation/assets/background/tuning.jpg" data-background-opacity="0.2">
+					<h3>Tune the Model</h3>
+					
+					<p>Most models have <strong>hyperparameters</strong>. For neural networks, the number of training epochs is a hyperparameter. For random forests, hyperparameters include things like the size of each decision tree and the number of trees.</p>
+
+					<p>We tune hyperparameters using our validation data set.</p>
+				</section>
+				
+				<section data-background-image="presentation/assets/background/tuning.jpg" data-background-opacity="0.2">
+					<h3>Evaluate the Model</h3>
+					
+					<p>Model evaluation happens when we send new data to the model that it has not seen during the training and validation process. We have to be careful not to let any information leak into the training data, meaning that we should never feed aggregates of training + evaluation data to a model.</p>
+
+					<p>If we fail to safeguard this data, we can end up overfitting our model to the test data, leaving it less suited for the real-world data outside of our sample.</p>
+				</section>
+				
+				<section data-background-image="presentation/assets/image/Bubbles.jpg" data-background-opacity="0.4">
+					<h3>Evaluate the Model</h3>
+					
+					<div class="container">
+						<div class="col">
+							<img src="presentation/assets/image/MarIO.png" />
+						</div>
+						<div class="col">
+							<p>You can also build a fitness function to evaluate certain types. Genetic algorithms are a common tool for this.</p>
+						</div>					
+					</div>
+				</section>
+				
+				<section data-background-image="presentation/assets/background/4_5_demo.jpg" data-background-opacity="0.2">
+					<h3>Demo Time</h3>
+				</section>
+				
+				<section data-background-image="presentation/assets/image/Bubbles.jpg" data-background-opacity="0.4">
+					<h3>Agenda</h3>
+					
+					<div class="container">
+						<div class="col">
+							<ol>
+								<li>Business Understanding</li>
+								<li>Data Processing</li>
+								<li>Modeling</li>
+								<li class="active">Deployment</li>
+								<li>What's Next?</li>
+							</ol>
+						</div>
+						<div class="col">
+							<img src="presentation/assets/image/tdsp-lifecycle2_deployment.png" />
+						</div>					
+					</div>
+				</section>
+				
+				<section data-background-image="presentation/assets/image/Bubbles.jpg" data-background-opacity="0.4">
+					<h3>Deployment</h3>
+					
+					<p>Back in the day, one team would build a solution in an analytics language (e.g., R) but you would not go to production with that. Instead, an implementation team would rewrite your model in C++ or some other fast language. Those days of research versus implementation teams using completely different languages are now (mostly) gone.</p>
+				</section>
+				
+				<section data-background-image="presentation/assets/background/microscope.jpg" data-background-opacity="0.2">
+					<h3>Deployment</h3>
+					
+					<p>Welcome to the era of the microservice:  many small services dedicated to providing a single answer to a single problem. Most microservices are exposed via web calls, although other forms of interoperation are still possible. The big benefit to web calls is that I can write my service in R, you can call it in Python, and then someone can call your service from .NET.</p>
+				</section>
+				
+				<section data-background-image="presentation/assets/background/microscope.jpg" data-background-opacity="0.2">
+					<h3>Deployment</h3>
+					
+					<p>Once you have a model ready to go, there are tools which make it relatively easy to deploy scalable predictive services.  For example, DeployR:</p>
+					
+					<img src="presentation/assets/image/deployrworkflow.png" />
+				</section>
+				
+				<section data-background-image="presentation/assets/background/stack.jpg" data-background-opacity="0.2">
+					<h3>Deployment</h3>
+					
+					<p>You can also build your own services.  Stacks that I've put into production include:</p>
+					
+					<ul>
+						<li>WebAPI (C#) ==> SQL Server Machine Learning Services ==> Microsoft Machine Learning with R</li>
+						<li>WebAPI (C#) ==> Nginx ==> Flask/Gunicorn ==> Keras with Python</li>
+						<li>WebAPI (F#) ==> Nginx ==> Dash (Python) and Shiny (R)</li>
+					</ul>
+					
+					<p>With a microservices architecture, you're trying to plug in these new APIs while not forcing everybody else to change their skills.</p>
+				</section>
+				
+				<section data-background-image="presentation/assets/background/time.jpg" data-background-opacity="0.2">
+					<h3>Deployment</h3>
+					
+					<p>SQL Server Machine Learning Services, in particular, is great when the input data is already stored in SQL Server. With certain types of models, you can make "real-time" predictions. Our scenario was complex enough that we pre-trained a large number of models and stored the results in SQL Server for later prediction.</p>
+				</section>
+				
+				<section data-background-image="presentation/assets/image/Bubbles.jpg" data-background-opacity="0.4">
+					<h3>Deployment</h3>
+					
+					<div class="container">
+						<div class="col">
+							<img src="presentation/assets/image/Jupyter.png" />
+						</div>
+						<div class="col">
+							<p>Another option is notebooks, which help you record your work for subsequent review. Jupyter (Julia + Python + R) and Apache Zeppelin are two great examples of notebooks.</p>
+						</div>					
+					</div>
+				</section>
+				
+				<section data-background-image="presentation/assets/image/Bubbles.jpg" data-background-opacity="0.4">
+					<h3>Deployment</h3>
+					
+					<div class="container">
+						<div class="col">
+							<img src="presentation/assets/image/Shiny.png" />
+						</div>
+						<div class="col">
+							<p>Shiny is an interactive visualization product combining JavaScript and R. This is more for visualizing data rather than integrating with other services.</p>
+						</div>					
+					</div>
+				</section>
+				
+				<section data-background-image="presentation/assets/image/Bubbles.jpg" data-background-opacity="0.4">
+					<h3>Agenda</h3>
+					
+					<ol>
+						<li>Business Understanding</li>
+						<li>Data Processing</li>
+						<li>Modeling</li>
+						<li>Deployment</li>
+						<li class="active">What's Next?</li>
+					</ol>
+				</section>
+				
+				<section data-background-image="presentation/assets/background/sinkhole.jpg" data-background-opacity="0.2">
+					<h3>What's Next?</h3>
+					
+					<p>After go-live, the job is not complete.</p>
+
+					<p>It is important to keep checking the efficacy of models. Model shift happens, where a model might have been good at one point in time but becomes progressively worse over time as circumstances change.</p>
+
+					<p>You may also find out that your training/testing data was not truly indicative of real-world data.</p>
+				</section>
+				
+				<section data-background-image="presentation/assets/background/flow.jpg" data-background-opacity="0.2">
+					<h3>What's Next?</h3>
+					
+					<p>Occasionally, you will want to take new production data and retrain the model, so keep track of your model's predictions and actual outcomes so you can determine the model's efficacy.</p>
+
+					<p>Depending upon your choice of algorithm, you might be able to update the existing model with the latest information, feeding those efficacy results back into the model.</p>
+
+					<p>Some algorithms, however, require you to retrain from scratch.</p>
+				</section>
+				
+				<section data-background-image="presentation/assets/background/repetition.jpg" data-background-opacity="0.2">
+					<h3>What's Next?</h3>
+					
+					<p>Regardless of model efficacy, you will want to confer with those stakeholders and ensure that your model fits their needs. Then, repeat the process.</p>
+
+					<p>In a production scenario, you will start with a Minimum Viable Product (MVP) to gauge interest.  From there, you can expand the base of predictions, increase accuracy, make the service faster, or add new functionality.</p>
+				</section>
+				
+				<section data-background-image="presentation/assets/image/Bubbles.jpg" data-background-opacity="0.4">
+					<h3>Moral Of The Story</h3>
+					
+					<p>A data plumber's work is never done.</p>
+					
+					<img src="presentation/assets/image/MarioGames.jpg" />
+				</section>
+
+				<section data-background-image="presentation/assets/image/Bubbles.jpg" data-background-opacity="0.4">
+					<h3>Wrapping Up</h3>
+					
+					<p>Over the course of today's talk, we have covered the Microsoft Team Data Science Process as well as a pragmatic implementation of a data science workflow. Following a stable process allows you to maximize the chances of developing a high-quality and effective model.</p>
+				</section>
+				
+				<section data-background-image="presentation/assets/image/Bubbles.jpg" data-background-opacity="0.4">
+					<h3>Wrapping Up</h3>
+					
+					<p>
+						To learn more, go here:
+						<br />
+						<a href="https://csmore.info/on/datascience">https://csmore.info/on/datascience</a>
+					</p>
+					<br />
+					<p>
+						And for help, contact me:
+						<br />
+						<a href="mailto:feasel@catallaxyservices.com">feasel@catallaxyservices.com</a> | <a href="https://www.twitter.com/feaselkl">@feaselkl</a>
+					</p>
+					<br />
+					<p>
+						Catallaxy Services consulting:
+						<br />
+						<a href="https://csmore.info/contact">https://CSmore.info/on/contact</a>
+					</p>
+				</section>
+			</div>
+		</div>
+
+		<script src="../reveal.js/dist/reveal.js"></script>
+		<script src="../reveal.js/plugin/zoom/zoom.js"></script>
+		<script src="../reveal.js/plugin/notes/notes.js"></script>
+		<script src="../reveal.js/plugin/search/search.js"></script>
+		<script src="../reveal.js/plugin/markdown/markdown.js"></script>
+		<script src="../reveal.js/plugin/math/math.js"></script>
+		<script src="../reveal.js/plugin/menu/menu.js"></script>
+		<script src="../reveal.js/plugin/highlight/highlight.js"></script>
+		<script src="../reveal.js/plugin/chart/Chart.min.js"></script>
+		<script src="../reveal.js/plugin/chart/plugin.js"></script>
+		<script>
+			// More info about initialization & config:
+			// - https://revealjs.com/initialization/
+			// - https://revealjs.com/config/
+			Reveal.initialize({
+				width: '70%',
+				controls: true,
+				progress: true,
+				center: true,
+				hash: true,
+				transition: 'fade',
+				
+
+				// Learn about plugins: https://revealjs.com/plugins/
+				plugins: [ RevealZoom, RevealNotes, RevealSearch, RevealMarkdown, RevealHighlight, RevealMath, RevealMenu, RevealChart ]
+			});
+		</script>
+	</body>
+</html>
